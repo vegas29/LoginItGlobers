@@ -1,16 +1,38 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
-import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useForm } from '../../hooks/useForm';
 import { loginStyles } from '../../theme/loginTheme';
 
 export const LoginScreen = () => {
 
+  const {user, password, onChange} = useForm({
+    user : '',
+    password: ''
+  });
+
   const onSubmit = () => {
-    console.log('submit');
+    Keyboard.dismiss();
+
+    if (user === '' || user.length === 0) {
+      Alert.alert(
+        'Wrong login', 
+        'Username is required'
+      );
+      return false;
+
+    } else if (password === '' || password.length === 0) {
+      Alert.alert(
+        'Wrong login', 
+        'Password is required'
+      );
+      return false;
+    }
   }
 
   return ( 
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={loginStyles.keyboardAvoidView}
       behavior={(Platform.OS) === 'ios' ? 'padding' : 'height'}
     >
       <View style={loginStyles.container}>
@@ -24,7 +46,7 @@ export const LoginScreen = () => {
           autoCapitalize="none"
           autoCorrect={false}
           onChangeText={(value) => onChange(value, 'user')}
-          value={'User'}
+          value={user}
         />
 
         <TextInput
@@ -35,7 +57,7 @@ export const LoginScreen = () => {
           autoCapitalize="none"
           autoCorrect={false}
           onChangeText={(value) => onChange(value, 'password')}
-          value={'Password'}
+          value={password}
         />
 
         {/* Button Login */}

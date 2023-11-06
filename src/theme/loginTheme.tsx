@@ -1,7 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet } from "react-native";
 import { COLORS } from "./settings/colors";
 
 export const loginStyles = StyleSheet.create({
+    keyboardAvoidView:{
+        flex:1
+    },
     scrollViewContainer:{
         flexGrow: 1, 
         backgroundColor: COLORS.WHITE 
