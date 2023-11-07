@@ -5,7 +5,7 @@ import { InitialStackParams } from '../../navigator/Navigator';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, ToastAndroid } from 'react-native';
 import { Loader } from '../../components/Loader';
 import { loginStyles } from '../../theme/loginTheme';
 
@@ -26,6 +26,10 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
   });
 
   useEffect(() => {
+    ToastAndroid.show('Check your inbox!', ToastAndroid.SHORT);
+  }, []);
+
+  useEffect(() => {
     if(errorMessage.length === 0) return;
 
     Alert.alert(
@@ -42,7 +46,7 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
     setVisibleError(!visibleError);
 }, [errorMessage]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     Keyboard.dismiss();
     
     setIsVisibleLoading(!isVisibleLoading);
@@ -62,9 +66,11 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
       return false;
     }
 
-    const respconfirmAccess = confirmAccessKey(user);
+    const respconfirmAccess = await confirmAccessKey(user);
 
-    if (respconfirmAccess) {
+    const { authStatus } = respconfirmAccess.data;
+
+    if (authStatus !== 'WrongCredentials') {
       navigation.navigate('HomeScreen', { user });
     }
 

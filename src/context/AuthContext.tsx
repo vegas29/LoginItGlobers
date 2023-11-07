@@ -138,10 +138,10 @@ export const AuthProvider = ({children}: any) => {
         try {
             const respValidateSignIn = await validateSignIn(user);
 
-            if (respValidateSignIn.status === 400) {
+            if (respValidateSignIn.status === 400 || respValidateSignIn.data.authStatus === 'WrongCredentials') {
                 return dispatch({ 
                     type: 'addError',
-                    payload: respValidateSignIn.data.authStatus
+                    payload: 'Error ' + respValidateSignIn.data.authStatus
                 });
             } 
             
