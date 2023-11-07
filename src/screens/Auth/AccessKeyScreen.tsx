@@ -66,9 +66,10 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
       return false;
     }
 
-    const respconfirmAccess = await confirmAccessKey(user);
+    console.log('user', user)
+    const respconfirmAccess = await confirmAccessKey(accessKey);
 
-    if (authStatus !== 'WrongCredentials' || authStatus !== 'BlockedUser') {
+    if (respconfirmAccess === 'Successs') {
       navigation.navigate('HomeScreen', { user });
     }
 

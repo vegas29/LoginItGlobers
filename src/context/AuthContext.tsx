@@ -11,7 +11,7 @@ type AuthContextProps = {
     user: string | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
     signIn: ( email: string ) => object | boolean;
-    confirmAccessKey: (accessKey: string) => object | boolean;
+    confirmAccessKey: (accessKey: string) => object | string;
     logOut: () => void;
     removeError: () => void;
 }
@@ -91,8 +91,10 @@ export const AuthProvider = ({children}: any) => {
             login: user
         };
 
+        console.log('data', data)
+
         try {
-            const respValidateSignIn:any = await itglobersApi.post<ValidateAccessKey>(`/api/vtexid/pub/authentication/accesskey/validate`, data, {
+            const respValidateSignIn:any = await itglobersApi.post<ValidateAccessKey>('/api/vtexid/pub/authentication/accesskey/validate', data, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
@@ -132,11 +134,13 @@ export const AuthProvider = ({children}: any) => {
         }
     };
 
-    const confirmAccessKey = async( user:string ) => {
+    const confirmAccessKey = async( accessKey:string ) => {
         try {
-            const respValidateSignIn = await validateSignIn(user);
+            const respValidateSignIn = await validateSignIn(accessKey);
 
             const { authStatus } = respValidateSignIn.data;
+
+            console.log('respValidateSignIn', respValidateSignIn.data);
 
             if (respValidateSignIn.status === 400 || authStatus === 'WrongCredentials' || authStatus === 'BlockedUser') {
                 return dispatch({ 
