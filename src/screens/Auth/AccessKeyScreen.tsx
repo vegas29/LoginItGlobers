@@ -38,7 +38,7 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
         [
           {
             text: 'OK',
-            onPress: removeError
+            onPress: () => {removeError(), setIsVisibleLoading(false)}
           }
         ]
     );
@@ -68,9 +68,7 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
 
     const respconfirmAccess = await confirmAccessKey(user);
 
-    const { authStatus } = respconfirmAccess.data;
-
-    if (authStatus !== 'WrongCredentials') {
+    if (authStatus !== 'WrongCredentials' || authStatus !== 'BlockedUser') {
       navigation.navigate('HomeScreen', { user });
     }
 

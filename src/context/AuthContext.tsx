@@ -117,8 +117,6 @@ export const AuthProvider = ({children}: any) => {
             setToken(respToken);
             setUser(user);
 
-            console.log('user')
-
             if (!respOTP) {
                 return dispatch({ 
                     type: 'addError',
@@ -138,7 +136,9 @@ export const AuthProvider = ({children}: any) => {
         try {
             const respValidateSignIn = await validateSignIn(user);
 
-            if (respValidateSignIn.status === 400 || respValidateSignIn.data.authStatus === 'WrongCredentials') {
+            const { authStatus } = respValidateSignIn.data;
+
+            if (respValidateSignIn.status === 400 || authStatus === 'WrongCredentials' || authStatus === 'BlockedUser') {
                 return dispatch({ 
                     type: 'addError',
                     payload: 'Error ' + respValidateSignIn.data.authStatus
@@ -151,7 +151,7 @@ export const AuthProvider = ({children}: any) => {
 
             await AsyncStorage.setItem('token', token);
 
-            return respValidateSignIn;
+            return authStatus;
 
         } catch (error) {
             console.log('error', error);

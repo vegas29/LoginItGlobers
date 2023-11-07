@@ -25,12 +25,12 @@ export const LoginScreen = ({ navigation }: Props) => {
     if(errorMessage.length === 0) return;
 
     Alert.alert(
-      'Login Incorrecto', 
+      'Wrong login', 
       errorMessage,
       [
         {
           text: 'OK',
-          onPress: removeError
+          onPress: () => {removeError(), setIsVisibleLoading(false)}
         }
       ]
     );
@@ -63,6 +63,7 @@ export const LoginScreen = ({ navigation }: Props) => {
     if (respSignIn) {
       navigation.navigate('AccessKeyScreen', {user});
     }
+
   }
 
   return ( 
