@@ -4,12 +4,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { InitialStackParams } from '../../navigator/Navigator';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../../context/AuthContext';
-import LottieView from 'lottie-react-native';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useForm } from '../../hooks/useForm';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Loader } from '../../components/Loader';
 import { loginStyles } from '../../theme/loginTheme';
-import { loaderStyles } from '../../theme/loaderTheme';
-
 
 
 interface Props extends StackScreenProps<InitialStackParams, 'AccessKeyScreen'> {}
@@ -82,15 +80,7 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
         <Text style={loginStyles.textTitle}>Confirm your session</Text>
 
         {isVisibleLoading && (
-          <>
-              <LottieView
-                source={require('../../assets/loaders/squares.json')}
-                style={loaderStyles.lottie}
-                autoPlay
-              />
-
-              <Text style={loaderStyles.text}>Loading...</Text>
-          </>
+          <Loader/>
         )}
 
         <TextInput

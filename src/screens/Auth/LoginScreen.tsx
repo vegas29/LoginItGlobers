@@ -6,9 +6,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { InitialStackParams } from '../../navigator/Navigator';
 import { useForm } from '../../hooks/useForm';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import LottieView from 'lottie-react-native';
+import { Loader } from '../../components/Loader';
 import { loginStyles } from '../../theme/loginTheme';
-import { loaderStyles } from '../../theme/loaderTheme';
 
 interface Props extends StackScreenProps<InitialStackParams, 'LoginScreen'> {}
 
@@ -77,15 +76,7 @@ export const LoginScreen = ({ navigation }: Props) => {
 
         
         {isVisibleLoading && (
-          <>
-              <LottieView
-                source={require('../../assets/loaders/squares.json')}
-                style={loaderStyles.lottie}
-                autoPlay
-              />
-
-              <Text style={loaderStyles.text}>Loading...</Text>
-          </>
+          <Loader/>
         )}
 
         <TextInput
