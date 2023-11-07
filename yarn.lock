@@ -5416,6 +5416,11 @@
   dependencies:
     "js-tokens" "^3.0.0 || ^4.0.0"
 
+"lottie-react-native@^6.4.0":
+  "integrity" "sha512-wFO/gLPN1KliyznBa8OtYWkc9Vn9OEmIg1/b1536KANFtGaFAeoAGhijVxYKF3UPKJgjJYFmqg0W//FVrSXj+g=="
+  "resolved" "https://registry.npmjs.org/lottie-react-native/-/lottie-react-native-6.4.0.tgz"
+  "version" "6.4.0"
+
 "lru-cache@^5.1.1":
   "integrity" "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="
   "resolved" "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz"
@@ -6624,7 +6629,7 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>=0.57", "react-native@0.70.10":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>=0.46", "react-native@>=0.57", "react-native@0.70.10":
   "integrity" "sha512-RkhrISLgWooMjbXvH7ohWCYdxxvV0xcGiEFcnEWkMy2y320QyA3evDcCExLv5Es2PnJKt6FiQKzGqrfh/T1H1A=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.70.10.tgz"
   "version" "0.70.10"

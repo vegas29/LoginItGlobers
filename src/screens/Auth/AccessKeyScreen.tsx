@@ -4,9 +4,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { InitialStackParams } from '../../navigator/Navigator';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../../context/AuthContext';
+import LottieView from 'lottie-react-native';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useForm } from '../../hooks/useForm';
 import { loginStyles } from '../../theme/loginTheme';
+import { loaderStyles } from '../../theme/loaderTheme';
 
 
 
@@ -19,6 +21,7 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
   const { confirmAccessKey, errorMessage, removeError } = useContext( AuthContext );
 
   const [visibleError, setVisibleError] = useState<boolean>(false);
+  const [isVisibleLoading, setIsVisibleLoading] = useState<boolean>(false);
 
   const {accessKey, onChange} = useForm({
     accessKey : ''
@@ -43,12 +46,21 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
 
   const onSubmit = () => {
     Keyboard.dismiss();
+    
+    setIsVisibleLoading(!isVisibleLoading);
 
     if (accessKey === '' || accessKey.length === 0) {
       Alert.alert(
         'Wrong login', 
-        'AccessKey is required'
+        'AccessKey is required',
+        [
+          {
+            text: 'OK',
+            onPress: () => setIsVisibleLoading(false)
+          }
+        ]
       );
+      setIsVisibleLoading(!isVisibleLoading);
       return false;
     }
 
@@ -68,6 +80,18 @@ export const AccessKeyScreen = ({route, navigation} : Props) => {
       <View style={loginStyles.container}>
 
         <Text style={loginStyles.textTitle}>Confirm your session</Text>
+
+        {isVisibleLoading && (
+          <>
+              <LottieView
+                source={require('../../assets/loaders/squares.json')}
+                style={loaderStyles.lottie}
+                autoPlay
+              />
+
+              <Text style={loaderStyles.text}>Loading...</Text>
+          </>
+        )}
 
         <TextInput
           placeholder='Enter your access key'

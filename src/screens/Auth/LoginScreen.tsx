@@ -6,7 +6,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { InitialStackParams } from '../../navigator/Navigator';
 import { useForm } from '../../hooks/useForm';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { loginStyles } from '../../theme/loginTheme';
+import { loaderStyles } from '../../theme/loaderTheme';
 
 interface Props extends StackScreenProps<InitialStackParams, 'LoginScreen'> {}
 
@@ -14,6 +16,7 @@ export const LoginScreen = ({ navigation }: Props) => {
 
   const { signIn, errorMessage, removeError } = useContext( AuthContext );
   const [visibleError, setVisibleError] = useState<boolean>(false);
+  const [isVisibleLoading, setIsVisibleLoading] = useState<boolean>(false);
 
   const {user, onChange} = useForm({
     user : ''
@@ -39,13 +42,21 @@ export const LoginScreen = ({ navigation }: Props) => {
   const onSubmit = async () => {
     Keyboard.dismiss();
 
+    setIsVisibleLoading(!isVisibleLoading);
+
     if (user === '' || user.length === 0) {
       Alert.alert(
         'Wrong login', 
-        'Email is required'
+        'Email is required',
+        [
+          {
+            text: 'OK',
+            onPress: () => setIsVisibleLoading(false)
+          }
+        ]
       );
+      setIsVisibleLoading(!isVisibleLoading);
       return false;
-
     }
 
     const respSignIn = await signIn(user);
@@ -63,6 +74,19 @@ export const LoginScreen = ({ navigation }: Props) => {
       <View style={loginStyles.container}>
 
         <Text style={loginStyles.textTitle}>Login</Text>
+
+        
+        {isVisibleLoading && (
+          <>
+              <LottieView
+                source={require('../../assets/loaders/squares.json')}
+                style={loaderStyles.lottie}
+                autoPlay
+              />
+
+              <Text style={loaderStyles.text}>Loading...</Text>
+          </>
+        )}
 
         <TextInput
           placeholder='Enter your email'

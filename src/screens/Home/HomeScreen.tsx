@@ -13,8 +13,6 @@ export const HomeScreen = ({ navigation }: Props) => {
 
     const { logOut, user } = useContext( AuthContext );
 
-    console.log('user', user);
-
     const onLogout = () => {
         logOut();
         navigation.navigate('LoginScreen');
