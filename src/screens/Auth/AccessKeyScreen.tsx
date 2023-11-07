@@ -1,58 +1,63 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import { StackScreenProps } from '@react-navigation/stack';
+import React, { useContext, useState, useEffect } from 'react';
 import { InitialStackParams } from '../../navigator/Navigator';
-import { useForm } from '../../hooks/useForm';
+import { StackScreenProps } from '@react-navigation/stack';
+import { AuthContext } from '../../context/AuthContext';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useForm } from '../../hooks/useForm';
 import { loginStyles } from '../../theme/loginTheme';
 
-interface Props extends StackScreenProps<InitialStackParams, 'LoginScreen'> {}
 
-export const LoginScreen = ({ navigation }: Props) => {
 
-  const { signIn, errorMessage, removeError } = useContext( AuthContext );
+interface Props extends StackScreenProps<InitialStackParams, 'AccessKeyScreen'> {}
+
+export const AccessKeyScreen = ({route, navigation} : Props) => {
+
+  const { user } = route.params;
+
+  const { confirmAccessKey, errorMessage, removeError } = useContext( AuthContext );
+
   const [visibleError, setVisibleError] = useState<boolean>(false);
 
-  const {user, onChange} = useForm({
-    user : ''
+  const {accessKey, onChange} = useForm({
+    accessKey : ''
   });
 
   useEffect(() => {
     if(errorMessage.length === 0) return;
 
     Alert.alert(
-      'Login Incorrecto', 
-      errorMessage,
-      [
-        {
-          text: 'OK',
-          onPress: removeError
-        }
-      ]
+        'Solicitud fallida', 
+        errorMessage,
+        [
+          {
+            text: 'OK',
+            onPress: removeError
+          }
+        ]
     );
 
     setVisibleError(!visibleError);
 }, [errorMessage]);
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     Keyboard.dismiss();
 
-    if (user === '' || user.length === 0) {
+    if (accessKey === '' || accessKey.length === 0) {
       Alert.alert(
         'Wrong login', 
-        'Email is required'
+        'AccessKey is required'
       );
       return false;
-
     }
 
-    const respSignIn = await signIn(user);
-    
-    if (respSignIn) {
-      navigation.navigate('AccessKeyScreen', {user});
+    const respconfirmAccess = confirmAccessKey(user);
+
+    if (respconfirmAccess) {
+      navigation.navigate('HomeScreen', { user });
     }
+
   }
 
   return ( 
@@ -62,17 +67,17 @@ export const LoginScreen = ({ navigation }: Props) => {
     >
       <View style={loginStyles.container}>
 
-        <Text style={loginStyles.textTitle}>Login</Text>
+        <Text style={loginStyles.textTitle}>Confirm your session</Text>
 
         <TextInput
-          placeholder='Enter your email'
+          placeholder='Enter your access key'
           placeholderTextColor="#000"
-          keyboardType="email-address"
+          keyboardType="numeric"
           style={loginStyles.input}
           autoCapitalize="none"
           autoCorrect={false}
-          onChangeText={(value) => onChange(value, 'user')}
-          value={user}
+          onChangeText={(value) => onChange(value, 'accessKey')}
+          value={accessKey}
         />
 
         <View style={loginStyles.buttonContainer}>
@@ -81,7 +86,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             style={loginStyles.button}
             onPress={onSubmit}
           >
-            <Text style={loginStyles.buttonText}>Send</Text>
+            <Text style={loginStyles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </View>

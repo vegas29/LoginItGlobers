@@ -70,13 +70,5 @@ export const loginStyles = StyleSheet.create({
         color: COLORS.WHITE,
         textAlign: 'center',
         fontWeight: 'bold'
-    },
-    newUserContainer: {
-        alignItems: 'flex-end',
-        width: '100%',
-        marginTop: 10,
-    },
-    textNewUser: {
-        color: COLORS.PRIMARYLIGHT2
     }
 });
